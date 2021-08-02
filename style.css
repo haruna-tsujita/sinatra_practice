@@ -1,0 +1,119 @@
+h1 {
+  background-color: darkseagreen;
+  text-align:center;
+  width: 185px;
+  height: 30px;
+  font-size: 20px;
+}
+
+ul {
+  margin: 0; 
+  padding: 0; 
+  list-style-type: none; 
+}
+
+li {
+  display: inline; 
+  padding: 0; 
+  margin: 0; 
+}
+
+li a{
+  display: block; 
+  border-left: 8px solid #474655;
+  border-top: 1px solid #474655;
+  border-right: 1px solid #474655;
+  border-bottom: 1px solid #474655;
+  background-color: #fff;
+  padding: 3px 10px;
+  text-decoration: none;
+  color: #333;
+  width: 150px; 
+  margin: 1px 0px;
+  text-align: left;
+  font-size: 14px;
+}
+
+li a:hover{
+  border-left: 8px solid #474655;
+  border-top: 1px solid #474655;
+  border-right: 1px solid #474655;
+  border-bottom: 1px solid #474655;
+  background-color: #d7efd7;
+}
+
+p a{
+  display: block; 
+  border-left: 8px solid #474655;
+  border-top: 1px solid #474655;
+  border-right: 1px solid #474655;
+  border-bottom: 1px solid #474655;
+  background-color: #fff;
+  padding: 3px 10px;
+  text-decoration: none;
+  color: #333;
+  width: 150px; 
+  margin: 1px 0px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.memolist {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  padding: 0.25em 0.5em;
+  border: 0.5px solid;
+  text-decoration: none;
+  color: #FFF;
+  background: #8FBC8F;
+  transition: .4s;
+}
+
+.memolist:hover {
+  background: #B0C4DE;
+}
+
+.get {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  padding: 0.25em 0.5em;
+  border: 0.5px solid;
+  text-decoration: none;
+  color: #FFF;
+  background: #4682B4;
+  transition: .4s;
+}
+
+.get:hover {
+  background: #B0C4DE;
+}
+
+.delete {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  padding: 0.25em 0.5em;
+  border: 0.5px solid;
+  text-decoration: none;
+  color: #FFF;
+  background: #CD5C5C;
+  transition: .4s;
+  margin-left: 20px;
+}
+
+.delete:hover {
+  background: #FFC0CB;
+}
+
+.title {
+  width: 180px;
+  height: 30px;
+  margin-top: 20px;
+}
+
+.content {
+  width: 181px;
+  height: 100px;
+}
