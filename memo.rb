@@ -22,6 +22,14 @@ def show_memo
   @memo = @memos.find {|x| x["id"].include?(@id)}
 end
 
+def overwrite_memo
+  @id = params[:"id"]
+  @title = params[:"title"]
+  @content = params[:"content"]
+  memo = { "id" => @id, "title" => @title, "content" => @content }
+  File.open("data/memos_#{memo["id"]}.json", "w") {|file| JSON.dump(memo, file)}
+end
+
 get '/memo' do
   read_memo
   erb :memo_top
@@ -56,7 +64,8 @@ end
 
 patch '/memos/:id' do
   show_memo
-  #保存するコードを書く
+  overwrite_memo
+  redirect to ("/memos/#{@id}")
   erb :show_memo
 end
 
@@ -93,6 +102,9 @@ __END__
     <textarea name="content" id="memo" value="" rows="3"></textarea></br>
     <input type="submit" value="送信">
   </form>
+  <form method="get" action="memo">
+    <input type="submit" value="メモ一覧">
+  </form>
 </body>
 </html>
 
@@ -115,6 +127,9 @@ __END__
   <form method="post">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="削除">
+  </form>
+  <form method="get" action="/memo">
+    <input type="submit" value="メモ一覧">
   </form>
 </body>
 </html>
@@ -140,6 +155,9 @@ __END__
     <input type="hidden" name="_method" value="patch">
     <input type="submit" value="変更">
   </div>
+  </form>
+  <form method="get" action="/memo">
+    <input type="submit" value="メモ一覧">
   </form>
 </body>
 </html>
