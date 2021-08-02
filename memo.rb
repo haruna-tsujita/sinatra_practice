@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
@@ -5,29 +7,35 @@ require 'erb'
 require 'SecureRandom'
 
 def write_memo
-  @title = params[:"title"]
-  @content = params[:"content"]
-  memo = { "id" => SecureRandom.uuid, "title" => @title, "content" => @content }
-  File.open("data/memos_#{memo["id"]}.json", "w") {|file| JSON.dump(memo, file)}
+  @title = params[:title]
+  @content = params[:content]
+  memo = { 'id' => SecureRandom.uuid, 'title' => @title, 'content' => @content }
+  File.open("data/memos_#{memo['id']}.json", 'w') { |file| JSON.dump(memo, file) }
 end
 
 def read_memo
-  files = Dir.glob("data/*")
-  @memos = files.map {|file| JSON.load(File.read(file))}
+  files = Dir.glob('data/*')
+  @memos = files.map { |file| JSON.parse(File.read(file)) }
 end
 
 def show_memo
   @id = params[:id]
   read_memo
-  @memo = @memos.find {|x| x["id"].include?(@id)}
+  @memo = @memos.find { |x| x['id'].include?(@id) }
 end
 
 def overwrite_memo
-  @id = params[:"id"]
-  @title = params[:"title"]
-  @content = params[:"content"]
-  memo = { "id" => @id, "title" => @title, "content" => @content }
-  File.open("data/memos_#{memo["id"]}.json", "w") {|file| JSON.dump(memo, file)}
+  @id = params[:id]
+  @title = params[:title]
+  @content = params[:content]
+  memo = { 'id' => @id, 'title' => @title, 'content' => @content }
+  File.open("data/memos_#{memo['id']}.json", 'w') { |file| JSON.dump(memo, file) }
+end
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
 end
 
 get '/memo' do
@@ -38,7 +46,7 @@ end
 post '/memo' do
   write_memo
   read_memo
-  erb :memo_top
+  redirect to('/memo')
 end
 
 get '/new_memo' do
@@ -53,7 +61,7 @@ end
 delete '/memos/:id' do
   @id = params[:id]
   File.delete("data/memos_#{@id}.json")
-  redirect to ("/memo")
+  redirect to('/memo')
   erb :show_memo
 end
 
@@ -65,7 +73,7 @@ end
 patch '/memos/:id' do
   show_memo
   overwrite_memo
-  redirect to ("/memos/#{@id}")
+  redirect to("/memos/#{@id}")
   erb :show_memo
 end
 
@@ -78,13 +86,17 @@ __END__
   <title>Sinatra - memo</title>
 </head>
 <body>
+  <link rel="stylesheet" href="/style.css" />
   <h1>メモアプリ</h1>
   <ul>
     <% @memos.each do |memo| %>
       <li><a href="/memos/<%= memo["id"] %>"><%= memo["title"] %></a></li>
     <% end %>
   </ul>
-  <p><a href=/new_memo>追加</a></p>
+  </br>
+  <form method="get" action="new_memo">
+    <input type="submit" value="追加" class="get">
+  </form>
 </body>
 </html>
 
@@ -96,14 +108,15 @@ __END__
   <title>Sinatra - memo</title>
 </head>
 <body>
-  <p>ここに入力してください</p>
-  <form method="post" action="memo">
-    <input type="text" name="title" id="title" value=""></br>
-    <textarea name="content" id="memo" value="" rows="3"></textarea></br>
-    <input type="submit" value="送信">
-  </form>
+  <link rel="stylesheet" href="/style.css" />
+  <h1>メモアプリ</h1>
   <form method="get" action="memo">
-    <input type="submit" value="メモ一覧">
+    <input type="submit" value="メモ一覧" class="memolist">
+  </form>
+  <form method="post" action="memo">
+    <input type="text" name="title" id="title" value="" class="title"></br>
+    <textarea name="content" id="memo" value="" rows="5" class="content"></textarea></br>
+    <input type="submit" value="送信" class="get">
   </form>
 </body>
 </html>
@@ -116,21 +129,22 @@ __END__
   <title>Sinatra - memo</title>
 </head>
 <body>
+  <link rel="stylesheet" href="/style.css" />
   <h1>メモアプリ</h1>
-  <h2>タイトル</h2>
-    <p><%= @memo["title"] %></p>
-  <h2>本文</h2>
-    <p><%= @memo["content"] %></p>
+  <form method="get" action="/memo">
+    <input type="submit" value="メモ一覧" class="memolist">
+  </form>
+  <p><%= h@memo["title"] %></p>
+  <p><%= h@memo["content"] %></p>
+  <table>
   <form method="get" action="/memos/<%= @memo["id"]%>/edit">
-    <input type="submit" value="変更">
+    <input type="submit" value="変更" class="get">
   </form>
   <form method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="submit" value="削除">
+    <input type="hidden" name="_method" value="delete" class="delete">
+    <input type="submit" value="削除" class="delete">
   </form>
-  <form method="get" action="/memo">
-    <input type="submit" value="メモ一覧">
-  </form>
+  </table>
 </body>
 </html>
 
@@ -142,22 +156,22 @@ __END__
   <title>Sinatra - memo</title>
 </head>
 <body>
+  <link rel="stylesheet" href="/style.css" />
   <h1>メモアプリ</h1>
-  <p>メモの内容（編集画面）</p>
+  <form method="get" action="/memo">
+    <input type="submit" value="メモ一覧" class="memolist">
+  </form>
   <form method="post" action="/memos/<%= @memo["id"]%>">
   <div>
-    <input type="text" name="title" value="<%= @memo["title"] %>">
+    <input type="text" name="title" value="<%= @memo["title"] %>" class="title">
   </div>
   <div>
-    <textarea name="content" row="5"><%= @memo["content"] %></textarea>
+    <textarea name="content" row="5" class="content"><%= @memo["content"] %></textarea>
   </div>
   <div>
     <input type="hidden" name="_method" value="patch">
-    <input type="submit" value="変更">
+    <input type="submit" value="変更" class="get">
   </div>
-  </form>
-  <form method="get" action="/memo">
-    <input type="submit" value="メモ一覧">
   </form>
 </body>
 </html>
