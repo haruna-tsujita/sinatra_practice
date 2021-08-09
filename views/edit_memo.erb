@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <mata charset="utf-8">
+  <title>Sinatra - memo</title>
+</head>
+<body>
+  <link rel="stylesheet" href="/style.css" />
+  <h1>メモアプリ</h1>
+  <form method="get" action="/memo">
+    <input type="submit" value="メモ一覧" class="memolist">
+  </form>
+  <form method="post" action="/memos/<%= @memo["id"]%>">
+  <div>
+    <input type="text" name="title" value="<%= @memo["title"] %>" class="title">
+  </div>
+  <div>
+    <textarea name="content" row="5" class="content"><%= @memo["content"] %></textarea>
+  </div>
+  <div>
+    <input type="hidden" name="_method" value="patch">
+    <input type="submit" value="変更" class="get">
+  </div>
+  </form>
+</body>
+</html>

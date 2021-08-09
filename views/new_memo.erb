@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <mata charset="utf-8">
+  <title>Sinatra - memo</title>
+</head>
+<body>
+  <link rel="stylesheet" href="/style.css" />
+  <h1>メモアプリ</h1>
+  <form method="get" action="memo">
+    <input type="submit" value="メモ一覧" class="memolist">
+  </form>
+  <form method="post" action="memo">
+    <input type="text" name="title" id="title" value="" class="title"></br>
+    <textarea name="content" id="memo" value="" rows="5" class="content"></textarea></br>
+    <input type="submit" value="送信" class="get">
+  </form>
+</body>
+</html>

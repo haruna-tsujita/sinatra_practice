@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <mata charset="utf-8">
+  <title>Sinatra - memo</title>
+</head>
+<body>
+  <link rel="stylesheet" href="/style.css" />
+  <h1>メモアプリ</h1>
+  <ul>
+    <% @memos.each do |memo| %>
+      <li><a href="/memos/<%= memo["id"] %>"><%= h(memo["title"]) %></a></li>
+    <% end %>
+  </ul>
+  </br>
+  <form method="get" action="new_memo">
+    <input type="submit" value="追加" class="get">
+  </form>
+</body>
+</html>
