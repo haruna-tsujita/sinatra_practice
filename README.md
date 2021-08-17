@@ -1,10 +1,10 @@
 Sinatra_practice
 
-リポジトリ（Webアプリ）の名前：Name
+リポジトリの名前：Name
 Sinatra＿practice　メモアプリ
 
 概要：Overview
-メモをタイトルと本文に分けて登録・更新・削除することができる。
+メモをタイトルと本文に分けて登録・更新・削除することができる
 
 使い方：Usage
  PostgreSQLでデータベースにテーブルを作成する
