@@ -10,11 +10,11 @@ Sinatra＿practice　メモアプリ
  PostgreSQLでデータベースにテーブルを作成する
 1. postgreSQLをインストールし、起動する
 2. 以下のようにデータベースとテーブルを作成する
-3. # CREATE DATABASE memo_data;
-4. # CREATE TABLE memo_data
-	# (id text not null,
-	# title text,
-	# content text);
+3. CREATE DATABASE memo_data;
+4. CREATE TABLE memo_data
+   (id text not null,
+    title text,
+    content text);
 
 Sinatraを使う準備をする
 1. 下記の環境に記した、ruby,sinatra,sinatra-contrib,pg,bundlerをインストールする
