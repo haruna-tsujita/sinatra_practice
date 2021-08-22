@@ -1,16 +1,14 @@
 <form method="get" action="/memo">
   <input type="submit" value="メモ一覧" class="memolist">
 </form>
-  <% @memos.each do |memo| %>
-    <p><%= h(memo["title"]) %></p>
-<p><%= h(memo["content"]) %></p>
-<% end %>
+<p><%= h@memo["title"] %></p>
+<div class="content"><p><%= h(@memo["content"]) %></p></div>
 <table>
-<form method="get" action="/memos/<% @memos.each do |memo| %><%= memo["id"]%><% end %>/edit">
-  <input type="submit" value="変更" class="get">
-</form>
-<form method="post">
-  <input type="hidden" name="_method" value="delete" class="delete">
-  <input type="submit" value="削除" class="delete">
-</form>
+  <form method="get" action="/memos/<%= @memo["id"]%>/edit">
+    <input type="submit" value="変更" class="get">
+  </form>
+  <form method="post">
+    <input type="hidden" name="_method" value="delete" class="delete">
+    <input type="submit" value="削除" class="delete">
+  </form>
 </table>

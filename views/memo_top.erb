@@ -1,9 +1,9 @@
 <ul>
   <% @memos.each do |memo| %>
-      <li><a href="/memos/<%= memo["id"] %>"><%= memo["title"] %></a></li>
+    <li><a href="/memos/<%= memo["id"] %>"><%= h(memo["title"]) %></a></li>
   <% end %>
-  </ul>
-  </br>
-  <form method="get" action="new_memo">
-    <input type="submit" value="追加" class="get">
-  </form>
+</ul>
+</br>
+<form method="get" action="new_memo">
+  <input type="submit" value="追加" class="get">
+</form>
