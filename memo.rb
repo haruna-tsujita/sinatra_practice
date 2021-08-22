@@ -6,20 +6,28 @@ require 'json'
 require 'erb'
 
 def write_memo(id, title, content)
-  memo = { 'id' => id, 'title' => title, 'content' => content }
-  File.open("data/memos_#{memo['id']}.json", 'w') { |file| JSON.dump(memo, file) }
+  connection = PG.connect( dbname: 'memo_data' )
+  connection.exec( "INSERT INTO memo_data(id, title, content) VALUES('#{id}', '#{title}', '#{content}')" )
 end
 
 def read_memo
-  files = Dir.glob('data/*')
-  @memos = files.map { |file| JSON.parse(File.read(file)) }
+  connection = PG.connect( dbname: 'memo_data' )
+  @memos = connection.exec( "SELECT * FROM memo_data" )
 end
 
-def show_memo
-  @id = params[:id]
-  File.open("data/memos_#{@id}.json") do |file|
-    @memo = JSON.load(file)
-  end
+def show_memo(id)
+  connection = PG.connect( dbname: 'memo_data' )
+  @memos = connection.exec( "SELECT * FROM memo_data WHERE id = '#{id}'")
+end
+
+def overwrite_memo(id, title, content)
+  connection = PG.connect( dbname: 'memo_data' )
+  connection.exec( "UPDATE memo_data SET title = '#{title}', content = '#{content}' WHERE id = '#{id}'" )
+end
+
+def delete(id)
+  connection = PG.connect( dbname: 'memo_data' )
+  connection.exec( "DELETE FROM memo_data WHERE id = '#{id}'" )
 end
 
 helpers do
