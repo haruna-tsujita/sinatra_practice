@@ -6,28 +6,28 @@ require 'pg'
 require 'erb'
 
 def write_memo(id, title, content)
-  connection = PG.connect( dbname: 'memo_data' )
-  connection.exec( "INSERT INTO memo_data(id, title, content) VALUES($1,$2,$3)",[id, title, content] )
+  connection = PG.connect(dbname: 'memo_data')
+  connection.exec('INSERT INTO memo_data(id, title, content) VALUES($1,$2,$3)', [id, title, content])
 end
 
 def read_memo
-  connection = PG.connect( dbname: 'memo_data' )
-  @memos = connection.exec( "SELECT * FROM memo_data" )
+  connection = PG.connect(dbname: 'memo_data')
+  @memos = connection.exec('SELECT * FROM memo_data')
 end
 
 def show_memo(id)
-  connection = PG.connect( dbname: 'memo_data' )
-  @memo = connection.exec( "SELECT * FROM memo_data WHERE id = $1",[id] )
+  connection = PG.connect(dbname: 'memo_data')
+  @memo = connection.exec('SELECT * FROM memo_data WHERE id = $1', [id])
 end
 
 def overwrite_memo(id, title, content)
-  connection = PG.connect( dbname: 'memo_data' )
-  connection.exec( "UPDATE memo_data SET title = '#{title}', content = '#{content}' WHERE id = $1",[id] )
+  connection = PG.connect(dbname: 'memo_data')
+  connection.exec("UPDATE memo_data SET title = '#{title}', content = '#{content}' WHERE id = $1", [id])
 end
 
 def delete(id)
-  connection = PG.connect( dbname: 'memo_data' )
-  connection.exec( "DELETE FROM memo_data WHERE id = $1",[id] )
+  connection = PG.connect(dbname: 'memo_data')
+  connection.exec('DELETE FROM memo_data WHERE id = $1', [id])
 end
 
 helpers do
@@ -68,7 +68,6 @@ end
 
 patch '/memos/:id' do
   show_memo(params[:id])
-  overwrite_memo(params[:id] ,params[:title], params[:content])
+  overwrite_memo(params[:id], params[:title], params[:content])
   redirect to("/memos/#{params[:id]}")
-  #erb :show_memo
 end
