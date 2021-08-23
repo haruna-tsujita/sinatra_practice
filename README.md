@@ -8,7 +8,7 @@ Sinatra＿practice　メモアプリ
 
 使い方：Usage
  PostgreSQLでデータベースにテーブルを作成する
-1. postgreSQLをインストールし、起動する
+1. PostgreSQLをインストールし、起動する
 2. 以下のようにデータベースとテーブルを作成する
 3. # CREATE DATABASE memo_data;
 4. # CREATE TABLE memo_data
