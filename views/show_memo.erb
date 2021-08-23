@@ -1,10 +1,12 @@
 <form method="get" action="/memo">
   <input type="submit" value="メモ一覧" class="memolist">
 </form>
-<p><%= h@memo["title"] %></p>
-<div class="content"><p><%= h(@memo["content"]) %></p></div>
+<% @memo.each do |memo| %>
+      <p><%= h(memo["title"]) %></p>
+  <div class="content"><p><%= h(memo["content"]) %></p></div>
+  <% end %>
 <table>
-  <form method="get" action="/memos/<%= @memo["id"]%>/edit">
+  <form method="get" action="/memos/<% @memo.each do |memo| %><%= memo["id"]%><% end %>/edit">
     <input type="submit" value="変更" class="get">
   </form>
   <form method="post">
