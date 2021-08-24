@@ -36,6 +36,10 @@ helpers do
   end
 end
 
+not_found do
+  '404 Not Found'
+end
+
 get '/memo' do
   read_memo
   erb :memo_top
