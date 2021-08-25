@@ -60,7 +60,7 @@ get '/memos/:id' do
   @memos.each do |memo|
     id_box << memo['id']
   end
-  if id_box.include?("#{params[:id]}")
+  if id_box.include?(params[:id].to_s)
     show_memo(params[:id])
     erb :show_memo
   else
