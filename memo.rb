@@ -55,8 +55,19 @@ get '/new_memo' do
 end
 
 get '/memos/:id' do
-  show_memo(params[:id])
-  erb :show_memo
+  read_memo
+  id_box = []
+  @memos.each do |memo|
+    id_box << memo['id']
+  end
+  if id_box.include?("#{params[:id]}")
+    show_memo(params[:id])
+    erb :show_memo
+  else
+    not_found do
+      '404 Not Found'
+    end
+  end
 end
 
 delete '/memos/:id' do
