@@ -30,6 +30,21 @@ def delete(id)
   connection.exec('DELETE FROM memo_data WHERE id = $1', [id])
 end
 
+def search_id
+  id_box = []
+  @memo.each do |memo|
+    id_box << memo['id']
+  end
+  if id_box.include?(params[:id].to_s)
+    show_memo(params[:id])
+    erb :show_memo
+  else
+    not_found do
+      '404 Not Found'
+    end
+  end
+end
+
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
@@ -55,22 +70,25 @@ get '/new_memo' do
 end
 
 get '/memos/:id' do
-  read_memo
-  id_box = []
-  @memos.each do |memo|
-    id_box << memo['id']
-  end
-  if id_box.include?(params[:id].to_s)
-    show_memo(params[:id])
-    erb :show_memo
-  else
-    not_found do
-      '404 Not Found'
-    end
-  end
+  show_memo(params[:id])
+  search_id
 end
 
 delete '/memos/:id' do
+  # show_memo(params[:id])
+  # id_box = []
+  # @memo.each do |memo|
+  #   id_box << memo['id']
+  # end
+  # if id_box.include?(params[:id].to_s)
+  #   delete(params[:id])
+  #   erb :show_memo
+  #   #redirect to('/memo')
+  # else
+  #   not_found do
+  #     '404 Not Found'
+  #   end
+  # end
   delete(params[:id])
   redirect to('/memo')
   erb :show_memo
@@ -83,6 +101,7 @@ end
 
 patch '/memos/:id' do
   show_memo(params[:id])
+  search_id
   overwrite_memo(params[:id], params[:title], params[:content])
   redirect to("/memos/#{params[:id]}")
 end
