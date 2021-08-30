@@ -75,20 +75,6 @@ get '/memos/:id' do
 end
 
 delete '/memos/:id' do
-  # show_memo(params[:id])
-  # id_box = []
-  # @memo.each do |memo|
-  #   id_box << memo['id']
-  # end
-  # if id_box.include?(params[:id].to_s)
-  #   delete(params[:id])
-  #   erb :show_memo
-  #   #redirect to('/memo')
-  # else
-  #   not_found do
-  #     '404 Not Found'
-  #   end
-  # end
   delete(params[:id])
   redirect to('/memo')
   erb :show_memo
@@ -101,7 +87,6 @@ end
 
 patch '/memos/:id' do
   show_memo(params[:id])
-  search_id
   overwrite_memo(params[:id], params[:title], params[:content])
   redirect to("/memos/#{params[:id]}")
 end
