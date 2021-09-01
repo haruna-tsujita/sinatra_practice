@@ -2,12 +2,12 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'erb'
 require 'pg'
+require 'erb'
 
 def write_memo(id, title, content)
   connection = PG.connect(dbname: 'memo_data')
-  connection.exec("INSERT INTO memo_data(id, title, content) VALUES('#{id}', '#{title}', '#{content}')")
+  connection.exec('INSERT INTO memo_data(id, title, content) VALUES($1,$2,$3)', [id, title, content])
 end
 
 def read_memo
@@ -17,23 +17,27 @@ end
 
 def show_memo(id)
   connection = PG.connect(dbname: 'memo_data')
-  @memos = connection.exec("SELECT * FROM memo_data WHERE id = '#{id}'")
+  @memo = connection.exec('SELECT * FROM memo_data WHERE id = $1', [id])
 end
 
 def overwrite_memo(id, title, content)
   connection = PG.connect(dbname: 'memo_data')
-  connection.exec("UPDATE memo_data SET title = '#{title}', content = '#{content}' WHERE id = '#{id}'")
+  connection.exec("UPDATE memo_data SET title = '#{title}', content = '#{content}' WHERE id = $1", [id])
 end
 
 def delete(id)
   connection = PG.connect(dbname: 'memo_data')
-  connection.exec("DELETE FROM memo_data WHERE id = '#{id}'")
+  connection.exec('DELETE FROM memo_data WHERE id = $1', [id])
 end
 
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
+end
+
+not_found do
+  '404 Not Found'
 end
 
 get '/memo' do
@@ -43,7 +47,6 @@ end
 
 post '/memo' do
   write_memo(SecureRandom.uuid, params[:title], params[:content])
-  read_memo
   redirect to('/memo')
 end
 
@@ -53,7 +56,11 @@ end
 
 get '/memos/:id' do
   show_memo(params[:id])
-  erb :show_memo
+  if @memo.first.nil?
+    status 404
+  else
+    erb :show_memo
+  end
 end
 
 delete '/memos/:id' do
@@ -64,12 +71,15 @@ end
 
 get '/memos/:id/edit' do
   show_memo(params[:id])
-  erb :edit_memo
+  if @memo.first.nil?
+    status 404
+  else
+    erb :edit_memo
+  end
 end
 
 patch '/memos/:id' do
   show_memo(params[:id])
   overwrite_memo(params[:id], params[:title], params[:content])
   redirect to("/memos/#{params[:id]}")
-  erb :show_memo
 end

@@ -1,15 +1,9 @@
 <form method="get" action="/memo">
   <input type="submit" value="メモ一覧" class="memolist">
 </form>
-<form method="post" action="/memos/<% @memos.each do |memo| %><%= memo["id"]%><% end %>">
-<div>
-  <input type="text" name="title" value="<% @memos.each do |memo| %><%= memo["title"] %><% end %>" class="title">
-</div>
-<div>
-  <textarea name="content" row="5" class="content"><% @memos.each do |memo| %><%= memo["content"] %><% end %></textarea>
-</div>
-<div>
+<form method="post" action="/memos/<% @memo.each do |memo| %><%= memo["id"]%><% end %>">
+  <input type="text" name="title" class="title" value="<% @memo.each do |memo| %><%= h(memo["title"]) %><% end %>"></br>
+  <textarea name="content" row="5" class="content"><% @memo.each do |memo| %><%= h(memo["content"]) %><% end %></textarea></br>
   <input type="hidden" name="_method" value="patch">
   <input type="submit" value="変更" class="get">
-</div>
 </form>

@@ -1,20 +1,20 @@
 Sinatra_practice
 
-リポジトリの名前：Name
+リポジトリ（Webアプリ）の名前：Name
 Sinatra＿practice　メモアプリ
 
 概要：Overview
-メモをタイトルと本文に分けて登録・更新・削除することができる
+メモをタイトルと本文に分けて登録・更新・削除することができる。
 
 使い方：Usage
  PostgreSQLでデータベースにテーブルを作成する
-1. postgreSQLをインストールし、起動する
+1. PostgreSQLをインストールし、起動する
 2. 以下のようにデータベースとテーブルを作成する
-3. CREATE DATABASE memo_data;
-4. CREATE TABLE memo_data
-   (id text not null,
-    title text,
-    content text);
+3. # CREATE DATABASE memo_data;
+4. # CREATE TABLE memo_data
+	# (id text not null,
+	# title text,
+	# content text);
 
 Sinatraを使う準備をする
 1. 下記の環境に記した、ruby,sinatra,sinatra-contrib,pg,bundlerをインストールする
